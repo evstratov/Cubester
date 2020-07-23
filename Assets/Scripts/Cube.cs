@@ -17,14 +17,18 @@ public class Cube : MonoBehaviour
 	private GameObject camera;
 
 	private int scores = 0;
+	private float time = 3f;
 
 	public Text scoresText;
+	public Text timeText;
 
 	// Start is called before the first frame update
-    void Start()
+	void Start()
     {
 		camera = GameObject.FindWithTag("MainCamera");
 		cameraScript = camera.GetComponent<CameraMove>();
+
+		StartCoroutine("TimeDecrementCoroutine", 0);
 
 		ShowScores();
     }
@@ -147,11 +151,25 @@ public class Cube : MonoBehaviour
 	public void AddScore(int score)
 	{
 		scores += score;
+		time = 3f;
+		StartCoroutine("TimeDecrementCoroutine", 0);
 		ShowScores();
 	}
 
 	private void ShowScores()
 	{
 		scoresText.text = $"Score: {scores}";
+	}
+
+	private IEnumerator TimeDecrementCoroutine()
+	{
+		while (time > 0)
+		{
+			timeText.text = time.ToString();
+			time -= 0.1f;
+			yield return new WaitForSeconds(0.1f);
+		}
+		timeText.text = "Game Over";
+		// GameOver();
 	}
 }

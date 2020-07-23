@@ -18,6 +18,11 @@ public class Point : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (cube.gameObject.transform.position == gameObject.transform.position)
+        {
+            cubeScript.AddScore(1);
+            RelocatePoint();
+        }
         /*colliders = Physics.OverlapSphere(transform.position, 0.0f);
         if (colliders.Length > 0)
         {
@@ -31,15 +36,18 @@ public class Point : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Cube")
+        /*if (other.gameObject.tag == "Cube")
         {
-            cubeScript.AddScore(1);
-            RelocatePoint();
-        }
+            if (other.gameObject.transform.position == gameObject.transform.position)
+            {
+                cubeScript.AddScore(1);
+                RelocatePoint();
+            }
+        }*/
     }
 
     private void RelocatePoint()
     {
-        transform.position = transform.position + new Vector3(1,0,1); 
+        transform.position = transform.position + new Vector3(Random.Range(-2,2),0, Random.Range(-2, 2)); 
     }
 }
