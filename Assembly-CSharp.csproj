@@ -63,9 +63,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Imphenzia\GradientSky\Scripts\Common\GradientSkyCommon.cs" />
+    <Compile Include="Assets\Imphenzia\GradientSky\Scripts\GradientSkyCamera.cs" />
+    <Compile Include="Assets\Imphenzia\GradientSky\Scripts\GradientSkyObject.cs" />
     <Compile Include="Assets\Scripts\CameraMove.cs" />
     <Compile Include="Assets\Scripts\Cube.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
+    <None Include="Assets\Imphenzia\GradientSky\ReadMe - GradientSky.txt" />
+    <None Include="Assets\Imphenzia\GradientSky\Shaders\VertexColorCamera.shader" />
+    <None Include="Assets\Imphenzia\GradientSky\Shaders\VertexColorObject.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/UnityProject/Cubester/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

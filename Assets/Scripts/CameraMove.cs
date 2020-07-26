@@ -13,7 +13,7 @@ public class CameraMove : MonoBehaviour
     {
         camera = Camera.main;
         cameraAngle = camera.fieldOfView;
-        offset = new Vector3(-0.23f, 3.08f, -4.85f);
+        offset = new Vector3(0f, 1.5f, -2.5f);
     }
 
     void Update()

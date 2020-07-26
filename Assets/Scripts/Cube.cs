@@ -126,7 +126,7 @@ public class Cube : MonoBehaviour
 
 		// cameraScript.Invoke("SwipeZoomPlus", 0);
 
-		anim[animName].speed = 5f;
+		anim[animName].speed = 8f;
 		anim.Play(animName);
 
 		while(progress <= 1)
