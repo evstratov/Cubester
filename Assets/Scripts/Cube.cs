@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,11 +35,12 @@ public class Cube : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
 	    SwipeMouse();
-    }
-	//inside class
+		SwipeTouch();
+
+	}
 
  
 	public void SwipeTouch()
@@ -65,23 +67,23 @@ public class Cube : MonoBehaviour
 	             //swipe upwards
 	             if(currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 	             {
-	                 Debug.Log("up swipe");
-	             }
+					StartCoroutine(MoveRoutine(new Vector3(0, 0, 1), "UpSwipe"));
+				}
 	             //swipe down
 	             if(currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 	             {
-	                 Debug.Log("down swipe");
-	             }
+					StartCoroutine(MoveRoutine(new Vector3(0, 0, -1), "DownSwipe"));
+				}
 	             //swipe left
 	             if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 	             {
-	                 Debug.Log("left swipe");
-	             }
+					StartCoroutine(MoveRoutine(new Vector3(-1, 0, 0), "LeftSwipe"));
+				}
 	             //swipe right
 	             if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 	             {
-	                 Debug.Log("right swipe");
-	             }
+					StartCoroutine(MoveRoutine(new Vector3(1, 0, 0), "RightSwipe"));
+				}
 	         }
 	     }
 	}
@@ -93,7 +95,7 @@ public class Cube : MonoBehaviour
         //swipe upwards
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-	        StartCoroutine(MoveRoutine(new Vector3(0,0,1), "UpSwipe"));
+			StartCoroutine(MoveRoutine(new Vector3(0,0,1), "UpSwipe"));
         }
         //swipe down
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -103,12 +105,11 @@ public class Cube : MonoBehaviour
         //swipe left
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-
 	        StartCoroutine(MoveRoutine(new Vector3(-1,0,0), "LeftSwipe"));
         }
         //swipe right
         if (Input.GetKeyDown(KeyCode.RightArrow))
-        { 
+        {
 	        StartCoroutine(MoveRoutine(new Vector3(1,0,0), "RightSwipe"));
         }
 	}
@@ -121,6 +122,7 @@ public class Cube : MonoBehaviour
 		// время задержки между итерациями, чтобы всё прошло за 0.25с
 		float delayTime = moveTime / (1f / (float) step);
 		Vector3 toPosition = transform.position + direction;
+		toPosition = new Vector3(Mathf.Round(toPosition.x), toPosition.y, Mathf.Round(toPosition.z));
 
 		isSteelMoving = true;
 
@@ -151,7 +153,7 @@ public class Cube : MonoBehaviour
 	public void AddScore(int score)
 	{
 		scores += score;
-		time = 3f;
+		time = 5f;
 		StartCoroutine("TimeDecrementCoroutine", 0);
 		ShowScores();
 	}
@@ -165,7 +167,7 @@ public class Cube : MonoBehaviour
 	{
 		while (time > 0)
 		{
-			timeText.text = time.ToString();
+			timeText.text = String.Format("{0:0.00}", time);
 			time -= 0.1f;
 			yield return new WaitForSeconds(0.1f);
 		}
