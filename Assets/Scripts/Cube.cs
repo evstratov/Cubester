@@ -116,38 +116,58 @@ public class Cube : MonoBehaviour
 	
 	IEnumerator MoveRoutine(Vector3 direction, string animName)
 	{
-		double progress = 0;
-		// за 100  по 0.01 до 1 итераций 
-		double step = 0.1f;
-		// время задержки между итерациями, чтобы всё прошло за 0.25с
-		float delayTime = moveTime / (1f / (float) step);
-		Vector3 toPosition = transform.position + direction;
-		toPosition = new Vector3(Mathf.Round(toPosition.x), toPosition.y, Mathf.Round(toPosition.z));
 
-		isSteelMoving = true;
-
-		// cameraScript.Invoke("SwipeZoomPlus", 0);
-
-		anim[animName].speed = 8f;
-		anim.Play(animName);
-
-		while(progress <= 1)
+		if (canMove(direction))
 		{
-			progress += step;
-			transform.position = Vector3.Lerp(transform.position, toPosition, (float)progress);
-			if (progress >= 0.5f)
+			double progress = 0;
+			// за 100  по 0.01 до 1 итераций 
+			double step = 0.1f;
+			// время задержки между итерациями, чтобы всё прошло за 0.25с
+			float delayTime = moveTime / (1f / (float) step);
+			Vector3 toPosition = transform.position + direction;
+			toPosition = new Vector3(Mathf.Round(toPosition.x), toPosition.y, Mathf.Round(toPosition.z));
+
+			isSteelMoving = true;
+
+			// cameraScript.Invoke("SwipeZoomPlus", 0);
+
+			anim[animName].speed = 8f;
+			anim.Play(animName);
+
+			while (progress <= 1)
 			{
-				// cameraScript.Invoke("SwipeZoomMinus", 0);
+				progress += step;
+				transform.position = Vector3.Lerp(transform.position, toPosition, (float) progress);
+				if (progress >= 0.5f)
+				{
+					// cameraScript.Invoke("SwipeZoomMinus", 0);
+				}
+
+				if (progress >= 1)
+				{
+					transform.position = toPosition;
+					isSteelMoving = false;
+					break;
+				}
+
+				yield return new WaitForSeconds(delayTime);
 			}
-			if (progress >= 1)
-			{
-				transform.position = toPosition;
-				isSteelMoving = false;
-				break;
-			}
-			
-			yield return new WaitForSeconds(delayTime);
 		}
+	}
+	
+	private bool canMove(Vector3 direction)
+	{
+		Vector3 newPos = transform.position + direction;
+	    RaycastHit hit;
+        Ray ray = new Ray(newPos, -Vector3.up);
+        Physics.Raycast(ray, out hit);
+
+        if (hit.collider != null && hit.collider.gameObject.tag == "Level")
+        {
+            return true;
+        }
+        else 
+			return false;
 	}
 
 	public void AddScore(int score)
