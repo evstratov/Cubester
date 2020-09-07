@@ -13,6 +13,7 @@ public class Cube : MonoBehaviour
 	private bool isSteelMoving = false;
 	private const float moveTime = 0.125f;
 
+	private GameObject Target;
 	public Animation anim;
 	private CameraMove cameraScript;
 	private GameObject camera;
@@ -26,6 +27,8 @@ public class Cube : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
+		Target = GameObject.FindWithTag("Target");
+
 		camera = GameObject.FindWithTag("MainCamera");
 		cameraScript = camera.GetComponent<CameraMove>();
 
@@ -117,7 +120,7 @@ public class Cube : MonoBehaviour
 	IEnumerator MoveRoutine(Vector3 direction, string animName)
 	{
 
-		if (canMove(direction))
+		if (CanMove(direction))
 		{
 			double progress = 0;
 			// за 100  по 0.01 до 1 итераций 
@@ -129,19 +132,17 @@ public class Cube : MonoBehaviour
 
 			isSteelMoving = true;
 
-			// cameraScript.Invoke("SwipeZoomPlus", 0);
+			
 
 			anim[animName].speed = 8f;
 			anim.Play(animName);
+
+			PlayJumpIfTarget(direction);
 
 			while (progress <= 1)
 			{
 				progress += step;
 				transform.position = Vector3.Lerp(transform.position, toPosition, (float) progress);
-				if (progress >= 0.5f)
-				{
-					// cameraScript.Invoke("SwipeZoomMinus", 0);
-				}
 
 				if (progress >= 1)
 				{
@@ -154,8 +155,16 @@ public class Cube : MonoBehaviour
 			}
 		}
 	}
+
+	private void PlayJumpIfTarget(Vector3 direction)
+	{
+		if (transform.position + direction == Target.transform.position)
+		{
+			// TODO: Jump
+		}
+	}
 	
-	private bool canMove(Vector3 direction)
+	private bool CanMove(Vector3 direction)
 	{
 		Vector3 newPos = transform.position + direction;
 	    RaycastHit hit;
