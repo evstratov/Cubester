@@ -119,7 +119,6 @@ public class Cube : MonoBehaviour
 	
 	IEnumerator MoveRoutine(Vector3 direction, string animName)
 	{
-
 		if (CanMove(direction))
 		{
 			double progress = 0;
@@ -201,6 +200,6 @@ public class Cube : MonoBehaviour
 			yield return new WaitForSeconds(0.1f);
 		}
 		timeText.text = "Game Over";
-		// GameOver();
+		// TODO: GameOver();
 	}
 }

@@ -11,7 +11,7 @@ public class CameraMove : MonoBehaviour
     private Vector3 velocity;
     void Start()
     {
-        offset = new Vector3(0f, 1.5f, -2.5f);
+        offset = new Vector3(0f, 3f, -5f);
     }
 
     void Update()

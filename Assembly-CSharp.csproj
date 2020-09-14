@@ -62,6 +62,8 @@
      <Compile Include="Assets\Scripts\WallElement.cs" />
      <Compile Include="Assets\Scripts\Target.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
+     <Compile Include="Assets\Scripts\Learning.cs" />
+     <Compile Include="Assets\Scripts\Utils.cs" />
      <None Include="Assets\Fonts\Documentation\JazzCreateAltKeys_BubbleFont.txt" />
      <None Include="Assets\Fonts\Documentation\JazzCreateBubble_VersionHistory_1.1.txt" />
  <Reference Include="Unity.Timeline.Editor">
