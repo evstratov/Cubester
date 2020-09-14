@@ -15,8 +15,7 @@ public class Cube : MonoBehaviour
 
 	private GameObject Target;
 	public Animation anim;
-	private CameraMove cameraScript;
-	private GameObject camera;
+	public GameObject gameOverPanel;
 
 	private int scores = 0;
 	private float time = 3f;
@@ -27,10 +26,11 @@ public class Cube : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
+		Utils.GameOver = false;
+
 		Target = GameObject.FindWithTag("Target");
 
-		camera = GameObject.FindWithTag("MainCamera");
-		cameraScript = camera.GetComponent<CameraMove>();
+		//gameOverPanel = GameObject.FindWithTag("GameOverPanel");
 
 		StartCoroutine("TimeDecrementCoroutine", 0);
 
@@ -40,9 +40,11 @@ public class Cube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-	    SwipeMouse();
-		SwipeTouch();
-
+		#if UNITY_EDITOR
+			SwipeKeys();
+		#elif ANDROID
+			SwipeTouch();
+		#endif
 	}
 
  
@@ -70,27 +72,35 @@ public class Cube : MonoBehaviour
 	             //swipe upwards
 	             if(currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 	             {
+					if (Utils.FirstPlay)
+						Utils.SecondPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(0, 0, 1), "UpSwipe"));
-				}
+				 }
 	             //swipe down
 	             if(currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 	             {
+					if (Utils.FirstPlay)
+						Utils.SecondPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(0, 0, -1), "DownSwipe"));
-				}
+				 }
 	             //swipe left
 	             if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 	             {
+					if (Utils.FirstPlay)
+						Utils.FirstPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(-1, 0, 0), "LeftSwipe"));
-				}
+				 }
 	             //swipe right
 	             if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 	             {
+					if (Utils.FirstPlay)
+						Utils.FirstPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(1, 0, 0), "RightSwipe"));
-				}
+				 }
 	         }
 	     }
 	}
-	public void SwipeMouse()
+	public void SwipeKeys()
 	{
 		if (isSteelMoving)
 			return;
@@ -98,22 +108,30 @@ public class Cube : MonoBehaviour
         //swipe upwards
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+			if (Utils.FirstPlay)
+				Utils.SecondPhase = false;
 			StartCoroutine(MoveRoutine(new Vector3(0,0,1), "UpSwipe"));
         }
         //swipe down
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-	        StartCoroutine(MoveRoutine(new Vector3(0,0,-1), "DownSwipe"));
+			if (Utils.FirstPlay)
+				Utils.SecondPhase = false;
+			StartCoroutine(MoveRoutine(new Vector3(0,0,-1), "DownSwipe"));
         }
         //swipe left
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+			if (Utils.FirstPlay)
+				Utils.FirstPhase = false;
 	        StartCoroutine(MoveRoutine(new Vector3(-1,0,0), "LeftSwipe"));
         }
         //swipe right
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-	        StartCoroutine(MoveRoutine(new Vector3(1,0,0), "RightSwipe"));
+			if (Utils.FirstPlay)
+				Utils.FirstPhase = false;
+			StartCoroutine(MoveRoutine(new Vector3(1,0,0), "RightSwipe"));
         }
 	}
 	
@@ -170,7 +188,8 @@ public class Cube : MonoBehaviour
         Ray ray = new Ray(newPos, -Vector3.up);
         Physics.Raycast(ray, out hit);
 
-        if (hit.collider != null && hit.collider.gameObject.tag == "Level")
+        if (hit.collider != null && hit.collider.gameObject.tag == "Level" &&
+			!Utils.ConfirmationPanelShowing && !Utils.GameOver)
         {
             return true;
         }
@@ -196,10 +215,17 @@ public class Cube : MonoBehaviour
 		while (time > 0)
 		{
 			timeText.text = String.Format("{0:0.00}", time);
-			time -= 0.1f;
+			if (!Utils.FirstPhase && !Utils.SecondPhase && !Utils.ConfirmationPanelShowing)
+				time -= 0.1f;
 			yield return new WaitForSeconds(0.1f);
 		}
 		timeText.text = "Game Over";
-		// TODO: GameOver();
+		GameOver();
+	}
+
+	private void GameOver()
+    {
+		gameOverPanel.SetActive(true);
+		Utils.GameOver = true;
 	}
 }

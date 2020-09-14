@@ -10,13 +10,13 @@ public class Target : MonoBehaviour
 
     private Cube cubeScript;
     private GameObject cube;
-    private Collider[] colliders;
     // Start is called before the first frame update
     void Start()
     {
         cube = GameObject.FindWithTag("Cube");
         if (cube != null)
             cubeScript = cube.GetComponent<Cube>();
+        RelocatePoint();
     }
 
     // Update is called once per frame

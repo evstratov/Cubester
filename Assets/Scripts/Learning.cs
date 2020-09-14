@@ -9,9 +9,13 @@ public class Learning : MonoBehaviour
     public GameObject leftRightFinger;
     [SerializeField]
     public GameObject upDownFinger;
-    
+    [SerializeField]
     public Animation animLeftRight;
+    [SerializeField]
     public Animation animUpDown;
+
+    [SerializeField]
+    public GameObject panelConfirmation;
 
     private bool isFirstPlay;
     // Start is called before the first frame update
@@ -25,17 +29,52 @@ public class Learning : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private IEnumerator LeftRightCoroutine()
     {
         leftRightFinger.SetActive(true);
-        animLeftRight.Play("RightLeftFinger");
+        Utils.FirstPhase = true;
+
+        animLeftRight.wrapMode = WrapMode.Loop;
+        animLeftRight.Play();
+
+        // пока не свайпнули в Cube.cs
+        while (Utils.FirstPhase)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
         leftRightFinger.SetActive(false);
-        yield return null;
+        StartCoroutine("UpDownCoroutine");
+    }
+
+    private IEnumerator UpDownCoroutine()
+    {
+        upDownFinger.SetActive(true);
+        Utils.SecondPhase = true;
+
+        animUpDown.wrapMode = WrapMode.Loop;
+        animUpDown.Play();
+
+        // пока не свайпнули в Cube.cs
+        while (Utils.SecondPhase)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        upDownFinger.SetActive(false);
+
+        ShowConfirmationPanel();
+    }
+
+    private void ShowConfirmationPanel()
+    {
+        panelConfirmation.SetActive(true);
+        Utils.ConfirmationPanelShowing = true;
+    }
+
+    public void ConfirmationButtonClick()
+    {
+        Utils.ConfirmationPanelShowing = false;
+        panelConfirmation.SetActive(false);
     }
 }
