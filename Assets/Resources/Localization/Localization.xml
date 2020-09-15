@@ -14,20 +14,20 @@
 	</Key>
 	<Key Name="SideSwipe_Key">
 		<Translates>
-			<en-us>Red</en-us>
-			<ru>Красный</ru>
+			<en-us>Swipe to the side to move Left or Right</en-us>
+			<ru>Проведи в сторону для движения вправо или влево</ru>
 		</Translates>
 	</Key>
 	<Key Name="VerticalSwipe_Key">
 		<Translates>
-			<en-us>Yelow</en-us>
-			<ru>Желтый</ru>
+			<en-us>Swipe Up or Down to move</en-us>
+			<ru>Для движения вверх или вниз, проведи вверх или вниз</ru>
 		</Translates>
 	</Key>
 	<Key Name="HurryUp_Key">
 		<Translates>
-			<en-us>Blue</en-us>
-			<ru>Синий</ru>
+			<en-us>Hurry up, You don't have much time!</en-us>
+			<ru>Поспеши, у тебя не так много времени!</ru>
 		</Translates>
 	</Key>
 </Keys>

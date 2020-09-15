@@ -20,8 +20,6 @@ public class Cube : MonoBehaviour
 	private int scores = 0;
 	private float time = 3f;
 
-	private string scoreKey = "Score_Key";
-
 	public Text scoresText;
 	public Text timeText;
 
@@ -223,7 +221,7 @@ public class Cube : MonoBehaviour
 
 	private void ShowScores()
 	{
-		scoresText.text = $"{LocalizationManager.GetTranslate(scoreKey)} {scores}";
+		scoresText.text = $"{LocalizationManager.GetTranslate(LocalizationManager.SCORE_KEY)} {scores}";
 	}
 
 	private IEnumerator TimeDecrementCoroutine()

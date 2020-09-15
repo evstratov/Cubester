@@ -23,6 +23,8 @@ public class Learning : MonoBehaviour
 
     [SerializeField]
     public GameObject tapToContinueButton;
+    [SerializeField]
+    public Text tapToContinueText;
 
     [SerializeField]
     public GameObject helpTextObject;
@@ -44,8 +46,8 @@ public class Learning : MonoBehaviour
 
         helpTextObject.SetActive(true);
         helpText = helpTextObject.GetComponent<Text>();
-        // TODO: Localization
-        helpText.text = "Swipe to the side to move Left or Right.";
+
+        helpText.text = LocalizationManager.GetTranslate(LocalizationManager.SIDE_SWIPE_KEY);
 
         Utils.FirstPhase = true;
 
@@ -66,8 +68,8 @@ public class Learning : MonoBehaviour
     {
         upDownFinger.SetActive(true);
         Utils.SecondPhase = true;
-        // TODO: Localization
-        helpText.text = "Swipe Up or Down to move.";
+
+        helpText.text = LocalizationManager.GetTranslate(LocalizationManager.VERTICAL_SWIPE_KEY);
 
         animUpDown.wrapMode = WrapMode.Loop;
         animUpDown.Play();
@@ -85,11 +87,11 @@ public class Learning : MonoBehaviour
 
     private void ShowTapToContinueButton()
     {
+        tapToContinueText.text = LocalizationManager.GetTranslate(LocalizationManager.TAP_TO_CONTINUE_KEY);
         tapToContinueButton.SetActive(true);
         Utils.TapToContinueButtonShowing = true;
 
-        // TODO: Localization
-        helpText.text = "Hurry up, You don't have much time.";
+        helpText.text = LocalizationManager.GetTranslate(LocalizationManager.HURRY_UP_KEY);
     }
 
     public void TapToContinueButtonClick()

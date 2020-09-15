@@ -6,6 +6,12 @@ public class LocalizationManager : MonoBehaviour
 {
     public static int SelectedLanguage { get; private set; }
 
+    public const string SCORE_KEY = "Score_Key";
+    public const string TAP_TO_CONTINUE_KEY = "TapToContinue_Key";
+    public const string SIDE_SWIPE_KEY = "SideSwipe_Key";
+    public const string VERTICAL_SWIPE_KEY = "VerticalSwipe_Key";
+    public const string HURRY_UP_KEY = "HurryUp_Key";
+
     public static event LanguageChangeHandler OnLanguageChange;
     public delegate void LanguageChangeHandler();
 
@@ -16,6 +22,7 @@ public class LocalizationManager : MonoBehaviour
 
     private void Awake()
     {
+        // TODO: load language id
         SelectedLanguage = 0;
         if (localization == null)
             LoadLocalization();

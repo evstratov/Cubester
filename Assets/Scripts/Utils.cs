@@ -12,6 +12,10 @@
     ///При первом запуске игры возвращает true 
     ///</summary>
     public static bool FirstPlay { get; set; }
+    ///<summary>
+    /// Если игра на паузе, true
+    ///</summary>
+    public static bool PauseGame { get; set; }
 
     ///<summary>
     /// когда обучение свайпу в сторону, возвращает true 
@@ -36,9 +40,9 @@
     ///</summary>
     public static bool IsGamePause() 
     {
-        if (FirstPhase || SecondPhase || TapToContinueButtonShowing || GameOver)
+        if (FirstPhase || SecondPhase || TapToContinueButtonShowing || GameOver || PauseGame)
             return true;
-        else 
+        else
             return false;
     }
 
