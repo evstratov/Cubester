@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Keys xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Key Name="Score_Key">
+		<Translates>
+			<en-us>Score:</en-us>
+			<ru>Счёт:</ru>
+		</Translates>
+	</Key>
+	<Key Name="TapToContinue_Key">
+		<Translates>
+			<en-us>Tap to Continue</en-us>
+			<ru>Коснитесь, чтобы продолжить</ru>
+		</Translates>
+	</Key>
+	<Key Name="SideSwipe_Key">
+		<Translates>
+			<en-us>Red</en-us>
+			<ru>Красный</ru>
+		</Translates>
+	</Key>
+	<Key Name="VerticalSwipe_Key">
+		<Translates>
+			<en-us>Yelow</en-us>
+			<ru>Желтый</ru>
+		</Translates>
+	</Key>
+	<Key Name="HurryUp_Key">
+		<Translates>
+			<en-us>Blue</en-us>
+			<ru>Синий</ru>
+		</Translates>
+	</Key>
+</Keys>

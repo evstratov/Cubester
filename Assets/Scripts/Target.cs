@@ -16,7 +16,8 @@ public class Target : MonoBehaviour
         cube = GameObject.FindWithTag("Cube");
         if (cube != null)
             cubeScript = cube.GetComponent<Cube>();
-        RelocatePoint();
+        if (!Utils.FirstPlay)    
+            RelocatePoint();
     }
 
     // Update is called once per frame

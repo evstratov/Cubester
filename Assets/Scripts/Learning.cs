@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Learning : MonoBehaviour
 {
+    #region Fingers
     [SerializeField]
     public GameObject leftRightFinger;
     [SerializeField]
@@ -13,18 +15,25 @@ public class Learning : MonoBehaviour
     public Animation animLeftRight;
     [SerializeField]
     public Animation animUpDown;
+    #endregion
 
     [SerializeField]
-    public GameObject panelConfirmation;
+    public GameObject targetPointer;
 
-    private bool isFirstPlay;
+
+    [SerializeField]
+    public GameObject tapToContinueButton;
+
+    [SerializeField]
+    public GameObject helpTextObject;
+    private Text helpText;
+
     // Start is called before the first frame update
     void Start()
     {
-        isFirstPlay = Utils.FirstPlay;
-
-        if (isFirstPlay)
+        if (Utils.FirstPlay)
         {
+            targetPointer.SetActive(true);
             StartCoroutine("LeftRightCoroutine");
         }
     }
@@ -32,6 +41,12 @@ public class Learning : MonoBehaviour
     private IEnumerator LeftRightCoroutine()
     {
         leftRightFinger.SetActive(true);
+
+        helpTextObject.SetActive(true);
+        helpText = helpTextObject.GetComponent<Text>();
+        // TODO: Localization
+        helpText.text = "Swipe to the side to move Left or Right.";
+
         Utils.FirstPhase = true;
 
         animLeftRight.wrapMode = WrapMode.Loop;
@@ -51,6 +66,8 @@ public class Learning : MonoBehaviour
     {
         upDownFinger.SetActive(true);
         Utils.SecondPhase = true;
+        // TODO: Localization
+        helpText.text = "Swipe Up or Down to move.";
 
         animUpDown.wrapMode = WrapMode.Loop;
         animUpDown.Play();
@@ -63,18 +80,23 @@ public class Learning : MonoBehaviour
 
         upDownFinger.SetActive(false);
 
-        ShowConfirmationPanel();
+        ShowTapToContinueButton();
     }
 
-    private void ShowConfirmationPanel()
+    private void ShowTapToContinueButton()
     {
-        panelConfirmation.SetActive(true);
-        Utils.ConfirmationPanelShowing = true;
+        tapToContinueButton.SetActive(true);
+        Utils.TapToContinueButtonShowing = true;
+
+        // TODO: Localization
+        helpText.text = "Hurry up, You don't have much time.";
     }
 
-    public void ConfirmationButtonClick()
+    public void TapToContinueButtonClick()
     {
-        Utils.ConfirmationPanelShowing = false;
-        panelConfirmation.SetActive(false);
+        Utils.TapToContinueButtonShowing = false;
+        targetPointer.SetActive(false);
+        tapToContinueButton.SetActive(false);
+        helpTextObject.SetActive(false);
     }
 }

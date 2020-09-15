@@ -20,6 +20,8 @@ public class Cube : MonoBehaviour
 	private int scores = 0;
 	private float time = 3f;
 
+	private string scoreKey = "Score_Key";
+
 	public Text scoresText;
 	public Text timeText;
 
@@ -29,8 +31,6 @@ public class Cube : MonoBehaviour
 		Utils.GameOver = false;
 
 		Target = GameObject.FindWithTag("Target");
-
-		//gameOverPanel = GameObject.FindWithTag("GameOverPanel");
 
 		StartCoroutine("TimeDecrementCoroutine", 0);
 
@@ -72,28 +72,36 @@ public class Cube : MonoBehaviour
 	             //swipe upwards
 	             if(currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 	             {
-					if (Utils.FirstPlay)
+					 if (Utils.FirstPhase)
+						return;
+					 if (Utils.FirstPlay)
 						Utils.SecondPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(0, 0, 1), "UpSwipe"));
 				 }
 	             //swipe down
 	             if(currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 	             {
-					if (Utils.FirstPlay)
+					 if (Utils.FirstPhase)
+						return;
+					 if (Utils.FirstPlay)
 						Utils.SecondPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(0, 0, -1), "DownSwipe"));
 				 }
 	             //swipe left
 	             if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 	             {
-					if (Utils.FirstPlay)
+					 if (Utils.SecondPhase)
+						return;
+					 if (Utils.FirstPlay)
 						Utils.FirstPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(-1, 0, 0), "LeftSwipe"));
 				 }
 	             //swipe right
 	             if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 	             {
-					if (Utils.FirstPlay)
+					 if (Utils.SecondPhase)
+						return;
+					 if (Utils.FirstPlay)
 						Utils.FirstPhase = false;
 					StartCoroutine(MoveRoutine(new Vector3(1, 0, 0), "RightSwipe"));
 				 }
@@ -108,6 +116,8 @@ public class Cube : MonoBehaviour
         //swipe upwards
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+			if (Utils.FirstPhase)
+				return;
 			if (Utils.FirstPlay)
 				Utils.SecondPhase = false;
 			StartCoroutine(MoveRoutine(new Vector3(0,0,1), "UpSwipe"));
@@ -115,6 +125,8 @@ public class Cube : MonoBehaviour
         //swipe down
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
+			if (Utils.FirstPhase)
+				return;
 			if (Utils.FirstPlay)
 				Utils.SecondPhase = false;
 			StartCoroutine(MoveRoutine(new Vector3(0,0,-1), "DownSwipe"));
@@ -122,6 +134,8 @@ public class Cube : MonoBehaviour
         //swipe left
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+			if (Utils.SecondPhase)
+				return;
 			if (Utils.FirstPlay)
 				Utils.FirstPhase = false;
 	        StartCoroutine(MoveRoutine(new Vector3(-1,0,0), "LeftSwipe"));
@@ -129,6 +143,8 @@ public class Cube : MonoBehaviour
         //swipe right
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+			if (Utils.SecondPhase)
+				return;
 			if (Utils.FirstPlay)
 				Utils.FirstPhase = false;
 			StartCoroutine(MoveRoutine(new Vector3(1,0,0), "RightSwipe"));
@@ -154,7 +170,7 @@ public class Cube : MonoBehaviour
 			anim[animName].speed = 8f;
 			anim.Play(animName);
 
-			PlayJumpIfTarget(direction);
+			// PlayJumpIfTarget(direction);
 
 			while (progress <= 1)
 			{
@@ -189,7 +205,7 @@ public class Cube : MonoBehaviour
         Physics.Raycast(ray, out hit);
 
         if (hit.collider != null && hit.collider.gameObject.tag == "Level" &&
-			!Utils.ConfirmationPanelShowing && !Utils.GameOver)
+			!Utils.TapToContinueButtonShowing && !Utils.GameOver)
         {
             return true;
         }
@@ -207,7 +223,7 @@ public class Cube : MonoBehaviour
 
 	private void ShowScores()
 	{
-		scoresText.text = $"Score: {scores}";
+		scoresText.text = $"{LocalizationManager.GetTranslate(scoreKey)} {scores}";
 	}
 
 	private IEnumerator TimeDecrementCoroutine()
@@ -215,7 +231,7 @@ public class Cube : MonoBehaviour
 		while (time > 0)
 		{
 			timeText.text = String.Format("{0:0.00}", time);
-			if (!Utils.FirstPhase && !Utils.SecondPhase && !Utils.ConfirmationPanelShowing)
+			if (!Utils.IsGamePause())
 				time -= 0.1f;
 			yield return new WaitForSeconds(0.1f);
 		}
